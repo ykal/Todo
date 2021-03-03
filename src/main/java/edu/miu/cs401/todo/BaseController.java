@@ -7,6 +7,8 @@ package edu.miu.cs401.todo;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -34,6 +36,14 @@ public class BaseController {
 
         Pane content = (Pane) loadFXML("info");
         this.contentContainer.getChildren().add(content);
+    }
+
+
+    @FXML
+    void showProjectForm(ActionEvent event) throws IOException {
+         AnchorPane projectForm = (AnchorPane) loadFXML("projectForm");
+        this.contentContainer.getChildren().clear();
+        this.contentContainer.getChildren().add(projectForm);
     }
 
 
