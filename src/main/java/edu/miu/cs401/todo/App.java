@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import edu.miu.cs401.todo.model.Reminder;
+
 /**
  * JavaFX App
  */
@@ -22,6 +24,7 @@ public class App extends Application {
         scene = new Scene(basePane, 690, 400);
         stage.setScene(scene);
         stage.show();
+        new Reminder();
     }
 
     static void setRoot(String fxml) throws IOException {
