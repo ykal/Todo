@@ -126,6 +126,7 @@ public class Task {
 	
 	@Override
 	public boolean equals(Object ob) {
+		if (ob == null) return false;
 		if (ob.getClass() != this.getClass())
 			return false;
 		return ((Task)ob).getId() == getId();

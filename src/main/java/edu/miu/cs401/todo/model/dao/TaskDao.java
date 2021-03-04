@@ -26,18 +26,21 @@ public class TaskDao implements TodoDao {
 			"'" +"%s" + "'," +
 			"'" +"%s" + "'," +
 			"'" +"%s" + "'," +
-			"'" +"%s" + "')";
-	private String update;
+			"'" +"%d" + "')";
 	private String insertSubTask = "INSERT INTO TaskSubTask (pid, cid)"
 			+ "VALUES('%d', '%d')";
 	private String select = "SELECT * FROM Task WHERE proj_id = %d;";
 	private String selectSubTask = "SELECT * FROM TaskSubTask WHERE pid = %d;";
+	private String delete = "DELETE FROM Task WHERE id='%d';";
+	private String update = "UPDATE Task SET is_completed = "+ "'" + "%d" + "'" + " WHERE " +
+			"id = " + "'" + "%d" + "'";
 	private final static Logger LOG = Logger.getLogger(Project.class.getName());
 	private final static String SELECT = "select";
 	private final static String SELECT_SUB_TASK = "selectSubTask";
 	private final static String INSERT_SUB_TASK = "insertSubTask";
 	private final static String UPDATE = "update";
 	private final static String INSERT = "insert";
+	private final static String DELETE = "delete";
 	private String queryType;
 	private String query;
 	private DataAccess da = DataAccessFactory.getDataAccess();
@@ -46,6 +49,7 @@ public class TaskDao implements TodoDao {
 	private int task_id;
 	private ResultSet resultSet;
 	private Task subtask;
+	private TaskUpdate taskUpdate;
 	
 	TaskDao() {}
 	
@@ -56,7 +60,7 @@ public class TaskDao implements TodoDao {
 					String.valueOf(proj_id), String.valueOf(task.getProgress().getId()),
 					task.getTitle(), task.getDescription(),
 					task.getDueDate().toString(), task.getCreatedAt().toString(),
-					task.getUpdatedAt().toString(), String.valueOf(task.isCompleted()));
+					task.getUpdatedAt().toString(), task.isCompleted() ? 1 : 0);
 		}
 		else if(queryType.equals(SELECT)) {
 			query = String.format(select,proj_id);
@@ -66,6 +70,12 @@ public class TaskDao implements TodoDao {
 		}
 		else if(queryType.equals(SELECT_SUB_TASK)) {
 			query = String.format(selectSubTask, task_id);
+		}
+		else if(queryType.equals(DELETE)) {
+			query = String.format(delete, this.task.getId());
+		}
+		else if(queryType.equals(UPDATE)) {
+			query = String.format(update, taskUpdate.isCompleted() ? 1 : 0, taskUpdate.getId());
 		}
 	}
 
@@ -84,6 +94,11 @@ public class TaskDao implements TodoDao {
 		return da.save();
 	}
 	
+	private int updateTask() throws DatabaseException{
+		this.queryType = UPDATE;
+		return da.save();
+	}
+
 	int insertTask(Task task, int proj_id) throws DatabaseException {
 		this.task = task;
 		this.proj_id = proj_id;
@@ -193,6 +208,46 @@ public class TaskDao implements TodoDao {
 			da.releaseConnection();
 		}
 		return tasks;
+	}
+	
+	private int deleteTask() throws DatabaseException{
+		this.queryType = DELETE;
+		return da.delete();
+	}
+	
+	public int deleteTask(Task task) throws DatabaseException {
+		this.task = task;
+		try {
+			da.createConnection(this);
+			da.startTransaction();
+			int result=deleteTask();
+        	da.commit();
+        	return result;
+        } catch(DatabaseException e) {
+        	LOG.warning("Attempting to rollback...");
+        	da.rollback();
+        	throw (e);
+        }  finally {
+        	da.releaseConnection();
+        }
+	}
+	
+	public int updateTask(Task task, TaskUpdate update) throws DatabaseException {
+		this.task = task;
+		this.taskUpdate = update;
+		try {
+			da.createConnection(this);
+			da.startTransaction();
+			int result=updateTask();
+        	da.commit();
+        	return result;
+        } catch(DatabaseException e) {
+        	LOG.warning("Attempting to rollback...");
+        	da.rollback();
+        	throw (e);
+        }  finally {
+        	da.releaseConnection();
+        }
 	}
 }
 

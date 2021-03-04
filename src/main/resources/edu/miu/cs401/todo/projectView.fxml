@@ -26,11 +26,11 @@
             <Insets />
          </VBox.margin>
          <content>
-            <ListView fx:id="tasksList" prefHeight="334.0" prefWidth="458.0">
+            <ListView fx:id="tasksList" onMouseClicked="#selectTask" prefHeight="334.0" prefWidth="458.0">
                <contextMenu>
                   <ContextMenu>
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Complete" />
+                      <MenuItem mnemonicParsing="false" onAction="#completeTask" text="Complete" />
                         <MenuItem mnemonicParsing="false" text="Delete" />
                     </items>
                   </ContextMenu>

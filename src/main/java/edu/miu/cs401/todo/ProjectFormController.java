@@ -1,10 +1,14 @@
 package edu.miu.cs401.todo;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
+import dataaccess.DatabaseException;
+import edu.miu.cs401.todo.model.Project;
+import edu.miu.cs401.todo.model.dao.ProjectDao;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ColorPicker;
@@ -42,9 +46,24 @@ public class ProjectFormController {
     @FXML
     void addProject(MouseEvent event) {
         System.out.println(this.projectNameInput.getText() + " --- " + this.projectThemeInput.getValue());
-        ObservableList<String> projects = this.baseController.projects;
-        projects.add(this.projectNameInput.getText());
-        this.baseController.refreshProjectsList(projects);
+        ObservableList<Project> projects = this.baseController.projects;
+        ProjectDao proDao = new ProjectDao();
+        Project project = new Project(this.projectNameInput.getText(), "");
+        int id;
+		try {
+			id = proDao.insertProject(project);
+	        project.setId(id);
+	        projects.add(project);
+	        this.baseController.refreshProjectsList(projects);
+	        this.baseController.getContentContainer().getChildren().clear();
+	        this.baseController.showProjectView(project);
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     public void setBaseController(BaseController controller) {

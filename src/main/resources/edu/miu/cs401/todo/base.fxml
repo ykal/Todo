@@ -29,6 +29,7 @@
                   <ContextMenu>
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#showNewTaskForm" text="New task" />
+                      <MenuItem mnemonicParsing="false" onAction="#deleteProject" text="Delete" />
                     </items>
                   </ContextMenu>
                </contextMenu></ListView>
