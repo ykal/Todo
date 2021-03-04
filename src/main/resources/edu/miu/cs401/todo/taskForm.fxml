@@ -32,7 +32,7 @@
                </rowConstraints>
                <children>
                   <Label text="Name" />
-                  <TextField prefHeight="80.0" prefWidth="236.0" GridPane.rowIndex="1" />
+                  <TextField fx:id="taskNameInput" prefHeight="80.0" prefWidth="236.0" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <GridPane alignment="CENTER" prefHeight="123.0" prefWidth="460.0">
@@ -45,7 +45,7 @@
                </rowConstraints>
                <children>
                   <Label prefWidth="63.0" text="Description" />
-                  <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                  <TextArea fx:id="taskDescriptionInput" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <GridPane alignment="CENTER" prefHeight="56.0" prefWidth="460.0">
@@ -58,12 +58,12 @@
                </rowConstraints>
                <children>
                   <Label text="Due Date (Optional))" />
-                  <DatePicker prefHeight="27.0" prefWidth="235.0" GridPane.rowIndex="1" />
+                  <DatePicker fx:id="taskDueDateInput" prefHeight="27.0" prefWidth="235.0" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <HBox alignment="CENTER" prefHeight="73.0" prefWidth="460.0">
                <children>
-                  <Button mnemonicParsing="false" text="Add" />
+                  <Button mnemonicParsing="false" onMouseClicked="#addTask" text="Add" />
                </children>
             </HBox>
          </children>
