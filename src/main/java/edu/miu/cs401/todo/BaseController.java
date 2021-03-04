@@ -2,6 +2,7 @@ package edu.miu.cs401.todo;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -19,6 +20,8 @@ import javafx.scene.layout.VBox;
 
 
 public class BaseController {
+
+    private String selectedProject;
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -58,9 +61,10 @@ public class BaseController {
 
     @FXML
     void showNewTaskForm(ActionEvent event) throws IOException {
-        AnchorPane taskForm = (AnchorPane) FxmlLoaderHelper.loadFXML("taskForm");
+        ParentControllerPair<Parent, TaskFormController> pair = FxmlLoaderHelper.getController("taskForm");
         this.contentContainer.getChildren().clear();
-        this.contentContainer.getChildren().add(taskForm);
+        pair.getController().initialize(this,this.selectedProject);
+        this.contentContainer.getChildren().add(pair.getParent());
     }
 
     @FXML
@@ -72,8 +76,9 @@ public class BaseController {
     private void showProjectView(String selectedProject) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("projectView.fxml"));
         Parent parent = fxmlLoader.load();
+        this.selectedProject = selectedProject;
         ProjectViewController controller = (ProjectViewController)fxmlLoader.getController();
-        controller.setTitle(selectedProject);
+        controller.initialize(this, Optional.of(selectedProject).orElse("Not Available"));
         this.contentContainer.getChildren().clear();
         this.contentContainer.getChildren().add(parent);
     }
