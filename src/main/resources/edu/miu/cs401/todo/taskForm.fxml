@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="contentContainer" prefHeight="400.0" prefWidth="460.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="contentContainer" prefHeight="400.0" prefWidth="460.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.miu.cs401.todo.TaskFormController">
    <children>
       <Pane layoutX="-23.0" prefHeight="60.0" prefWidth="460.0">
          <children>

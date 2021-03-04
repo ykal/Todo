@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="690.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller = "edu.miu.cs401.todo.BaseController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="690.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.miu.cs401.todo.BaseController">
    <children>
       <AnchorPane fx:id="leftPane" maxWidth="230.0" prefHeight="400.0" prefWidth="230.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0) dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); -fx-background-color: #e3d3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -22,8 +24,15 @@
                   </Label>
                </children>
             </Pane>
-            <ListView layoutY="60.0" prefHeight="400.0" prefWidth="230.0" style="-fx-background-color: #fffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0" />
-            <Button layoutX="162.0" layoutY="355.0" minWidth="38.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="54.0" style="-fx-background-color: #E83200#E83200 #E83200#E83200;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="162.0">
+            <ListView fx:id="projectsList" layoutY="60.0" onMouseClicked="#onProjectSelected" prefHeight="400.0" prefWidth="230.0" style="-fx-background-color: #fffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#showNewTaskForm" text="New task" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu></ListView>
+            <Button layoutX="162.0" layoutY="355.0" minWidth="38.0" mnemonicParsing="false" onAction="#showProjectForm" prefHeight="31.0" prefWidth="54.0" style="-fx-background-color: #E83200#E83200;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="162.0">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -34,6 +43,6 @@
             </Button>
          </children>
       </AnchorPane>
-      <AnchorPane id="contentContainer" fx:id="contentContainer" layoutX="231.0" prefHeight="400.0" prefWidth="461.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="231.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <AnchorPane id="contentContainer" fx:id="contentContainer" layoutX="231.0" onMouseClicked="#onProjectSelected" prefHeight="400.0" prefWidth="461.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="231.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>
