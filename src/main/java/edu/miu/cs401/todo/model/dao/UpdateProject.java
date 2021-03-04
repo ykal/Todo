@@ -6,6 +6,8 @@ import edu.miu.cs401.todo.model.Task;
 
 public class UpdateProject {
 	private String description;
+	private String title;
+	private int id;
 	private List<Task> tasks;
 	
 	public UpdateProject(String desc) {
@@ -30,6 +32,10 @@ public class UpdateProject {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public int getId() {
+		return id;
 	}
 	
 }

@@ -12,17 +12,70 @@ public class TaskUpdate {
 	private String title;
 	private String description;
 	private LocalDate dueDate;
-	private LocalDate createdAt;
 	private LocalDate updatedAt;
 	private boolean isCompleted;
-	public static final Label DEFAULT_LABEL = Label.GREEN;
-	
-	private Label label = DEFAULT_LABEL;
+	private Label label;
 	private Progress progress;
-	private List<Task> subTasks;
 	
-	public TaskUpdate(String desc) {
-		this.description = desc;
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public LocalDate getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(LocalDate dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	public LocalDate getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDate updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public boolean isCompleted() {
+		return isCompleted;
+	}
+
+	public void setCompleted(boolean isCompleted) {
+		this.isCompleted = isCompleted;
+	}
+
+	public Label getLabel() {
+		return label;
+	}
+
+	public void setLabel(Label label) {
+		this.label = label;
+	}
+
+	public Progress getProgress() {
+		return progress;
+	}
+
+	public void setProgress(Progress progress) {
+		this.progress = progress;
+	}
+
+	public TaskUpdate(boolean b, int id) {
+		this.isCompleted = b;
+		this.id = id;
 	}
 
 	public String getDescription() {

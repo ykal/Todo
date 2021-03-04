@@ -17,12 +17,14 @@ public class ProjectDao implements TodoDao {
 			"'" +"%s" + "'," +
 			"'" +"%s" + "')";
 	private String update = "UPDATE Project SET description = "+ "'" + "%s" + "'" + " WHERE " +
-			"title = " + "'" + "%s" + "'";
+			"id = " + "'" + "%s" + "'";
 	private String select = "SELECT * FROM Project;";
+	private String delete = "DELETE FROM Project WHERE id='%d';";
 	private static final Logger LOG = Logger.getLogger(Project.class.getName());
 	private final static String SELECT = "select";
 	private final static String UPDATE = "update";
 	private final static String INSERT = "insert";
+	private final static String DELETE = "delete";
 	private String queryType;
 	private String query;
 	private DataAccess da = DataAccessFactory.getDataAccess();
@@ -35,8 +37,16 @@ public class ProjectDao implements TodoDao {
 		if(queryType.equals(INSERT)) {
 			query = String.format(insert, proj.getTitle(), proj.getDescription());
 		}
-		if(queryType.equals(SELECT)) {
+		else if(queryType.equals(SELECT)) {
 			query = select;
+		}
+		else if(queryType.equals(DELETE)) {
+			query = String.format(delete, this.proj.getId());
+		}
+		else if(queryType.equals(UPDATE)) {
+			query = String.format(UPDATE, 
+					this.updateProject.getDescription(), 
+					this.updateProject.getId());
 		}
 	}
 
@@ -60,6 +70,16 @@ public class ProjectDao implements TodoDao {
 		da.read();
 	}
 	
+	private int delete() throws DatabaseException{
+		this.queryType = DELETE;
+		return da.delete();
+	}
+	
+	private int update() throws DatabaseException{
+		this.queryType = UPDATE;
+		return da.save();
+	}
+	
 	public int insertTasks(Project p) throws DatabaseException {
 		this.proj = p;
 		TaskDao tDao = new TaskDao();
@@ -81,6 +101,12 @@ public class ProjectDao implements TodoDao {
 			result = tDao.insertTask(task, this.proj.getId());
 		for(Task task : update.getTasks())
 			result = tDao.insertSubTask(task.getSubTasks(), task);
+		return result;
+	}
+	
+	public int deleteTask(Task task) throws DatabaseException{
+		TaskDao tDao = new TaskDao();
+		int result = tDao.deleteTask(task);
 		return result;
 	}
 	
@@ -118,6 +144,50 @@ public class ProjectDao implements TodoDao {
 			projects.add(proj);
 		}
 		return projects;
+	}
+	
+	public int deleteProject(Project p) throws DatabaseException {
+		this.proj = p;
+		try {
+			for(Task task : p.getTasks()) {
+				TaskDao tDao = new TaskDao();
+				tDao.deleteTask(task);
+			}
+			da.createConnection(this);
+			da.startTransaction();
+			int result = delete();
+			da.commit();
+			return result;
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			da.rollback();
+			throw(e);
+		}finally {
+			da.releaseConnection();
+		}
+	}
+	
+	public int updateProject(Project p) throws DatabaseException {
+		this.proj = p;
+		da.createConnection(this);
+		da.startTransaction();
+		try {
+        	int result = update();
+        	da.commit();
+        	return result;
+        } catch(DatabaseException e) {
+        	LOG.warning("Attempting to rollback...");
+        	da.rollback();
+        	throw (e);
+        }  finally {
+        	da.releaseConnection();
+        }
+	}
+
+	public void updateTask(Task selectedTask, TaskUpdate taskUpdate) throws DatabaseException {
+		TaskDao tDao = new TaskDao();
+		tDao.updateTask(selectedTask, taskUpdate);
 	}
 
 }
