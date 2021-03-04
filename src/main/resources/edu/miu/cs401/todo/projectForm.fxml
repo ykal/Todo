@@ -12,8 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="contentContainer" prefHeight="400.0" prefWidth="460.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="contentContainer" prefHeight="400.0" prefWidth="460.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.miu.cs401.todo.ProjectFormController">
    <children>
       <Pane layoutX="-23.0" prefHeight="60.0" prefWidth="460.0">
          <children>
@@ -32,7 +31,7 @@
               </rowConstraints>
                <children>
                   <Label text="Name" />
-                  <TextField GridPane.rowIndex="1" />
+                  <TextField fx:id="projectNameInput" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <GridPane alignment="CENTER" prefHeight="56.0" prefWidth="460.0">
@@ -45,12 +44,12 @@
                </rowConstraints>
                <children>
                   <Label text="Theme" />
-                  <ColorPicker prefWidth="238.0" GridPane.rowIndex="1" />
+                  <ColorPicker fx:id="projectThemeInput" prefWidth="238.0" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" text="Add" />
+                  <Button mnemonicParsing="false" onMouseClicked="#addProject" text="Add" />
                </children>
             </HBox>
          </children>
